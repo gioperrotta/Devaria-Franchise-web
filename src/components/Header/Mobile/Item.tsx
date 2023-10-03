@@ -7,7 +7,7 @@ interface NavMobileItemProps {
   children: ReactNode
 }
 
-export function NavMobileItem({ to, children }: NavMobileItemProps) {
+export function Item({ to, children }: NavMobileItemProps) {
   const { setIsVisible } = useNavMobileContext()
   const router = useRouter()
 
@@ -22,7 +22,7 @@ export function NavMobileItem({ to, children }: NavMobileItemProps) {
   return (
     <div
       onClick={handleClick}
-      className='w-full flex items-center justify-between text-md p-2 text-gray-100 bg-gray-300 hover:bg-gray-600 '
+       className='w-full flex items-center justify-between text-md p-2 text-gray-100 bg-gray-300 hover:bg-gray-600 '
     >
       {children}
     </div>

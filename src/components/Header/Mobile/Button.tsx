@@ -7,7 +7,7 @@ interface NavMobileButtonProps {
 }
 
 
-export function NavMobileButton({ children }: NavMobileButtonProps) {
+export function Button({ children }: NavMobileButtonProps) {
   return (
     <button
       type="button"

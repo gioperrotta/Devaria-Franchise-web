@@ -30,20 +30,15 @@ export function Header({ userName, avatarUrl, children }: ProfileMenuProps) {
   return (
     <div className= "flex justify-end items-center md:ml-6 py-2 lg:py-0">
       <div className="relative ml-3">
-        <div>
           <button
             onClick={toggleHidenClass}
             type="button"
             className=" relative flex max-w-xs items-center rounded-full bg-gray-800 p-1 text-sm focus:outline-none hover:ring-1 hover:ring-white hover:ring-offset-1 hover:ring-offset-gray-800 "
             id="user-menu-button"
-            aria-expanded="false"
-            aria-haspopup="true"
           >
-            <span className="absolute -inset-1.5"></span>
-            <span className="text-gray-100 mr-8 pl-1">{userName?.split(' ')[0]}</span>
+            <span className="hidden lg:block  text-gray-100 mr-8 pl-1">{userName?.split(' ')[0]}</span>
             <img className="h-8 w-8 rounded-full" src={avatarUrl} alt="Avatar do usuário ativo" />
           </button>
-        </div>
         <div className={hiddenCalss}>
           <div className="bg-gray-400  rounded-lg flex flex-col gap-1" >
             {children}
