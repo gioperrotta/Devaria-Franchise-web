@@ -2,20 +2,22 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 
 import { useForm, FormProvider } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import Image from 'next/image'
 
 import LogoA21 from '../../../public/images/A21-Logo-500.png'
-import { InputBox } from '@/components/InputBox'
 
-import { Button } from '@/components/Button'
 
-import { useAuthContext } from '@/contexts/AuthContext'
-import { setCookie } from 'nookies'
+import {Alert,  Button, InputBox, Spinner } from '@/components'
+
+
+import { useAuthContext } from '@/contexts'
+
+import { SignIn } from '@phosphor-icons/react'
 
 const LoginSchema = z.object({
   email: z.string().nonempty({
@@ -42,6 +44,10 @@ type LoginData = z.infer<typeof LoginSchema>
 export default function Login() {
   const [message, setMessage] = useState('')
   const { setUserInformation } = useAuthContext()
+  
+  const [isAlertErrorOpen, setIsAlertErrorOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
 
   const router = useRouter()
 
@@ -51,6 +57,7 @@ export default function Login() {
 
   async function userLogin({ email, password }: LoginData) {
     try {
+      setIsLoading(true)
       const result = await signIn('credentials', {
         email,
         password,
@@ -58,11 +65,13 @@ export default function Login() {
       })
 
       if (result?.error) {
-        setMessage('E-mail ou Senha incorretos')
+        setIsLoading(false)
+        setIsAlertErrorOpen(true)
         return
       }
+
       setUserInformation()
-      setMessage('ok')
+      setIsLoading(false)
       router.replace('/dashboard')
     } catch (error) {
       console.log('Login error => ', error)
@@ -80,12 +89,12 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex  flex-1 flex-col justify-center px-6 py-12 lg:px-8  bg-gray-800 text-gray-100 ">
-      {message && <span className='block text-red'>{message}</span>}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           className="mx-auto h-40 w-auto"
           src={LogoA21}
           alt="Logo Armazem 21"
+          priority
         />
       </div>
 
@@ -94,14 +103,18 @@ export default function Login() {
           <form className="space-y-6" onSubmit={handleSubmit(userLogin)}>
             <InputBox disabled={isSubmitting} onFocus={() => setMessage('')} type='text' field='email' label='E-mail' />
             <InputBox disabled={isSubmitting} onFocus={() => setMessage('')} type='password' field='password' label='Senha' />
-            <Button
-              disabled={isSubmitting}
-              label='Entrar'
-              color='bg-green-700'
-            />
+            <Button variant='submit' size='full' iconright={<SignIn size={32}/>}>Entrar</Button>
           </form>
         </FormProvider>
+  
       </div>
+      <Alert
+          isOpen={isAlertErrorOpen}
+          setIsOpen={setIsAlertErrorOpen}
+          title='Erro ao tentar fazer login'
+          message='Usuário, E-mail ou Senha inválidos !' 
+        />
+        <Spinner isOpen={isLoading} />
     </div>
   )
 }

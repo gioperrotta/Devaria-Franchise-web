@@ -1,9 +1,11 @@
 'use client'
-import { NavMobileProvider } from './NavMobileContext'
+import { VisibleComponentsProvider } from './NavMobileContext'
 import { AuthContextProvider } from './AuthContext'
 
 export * from './NavMobileContext';
+export * from './AuthContext'
+
 export {
-  NavMobileProvider,
+  VisibleComponentsProvider,
   AuthContextProvider
 }

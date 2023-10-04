@@ -8,6 +8,7 @@ export function Logo() {
         className="h-auto w-52"
         src={LogoImg}
         alt='Logo A21'
+        priority
       />
     </div>
   )

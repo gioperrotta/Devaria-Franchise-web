@@ -1,19 +1,24 @@
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react'
 
-interface INavMobileContext {
-  isVisible: boolean
-  setIsVisible: Dispatch<SetStateAction<boolean>>
+interface IVisibleComponentsContext {
+  isNavVisible: boolean
+  setIsNavVisible: Dispatch<SetStateAction<boolean>>
+
+  isOpenModal: boolean
+  setIsOpenModal: Dispatch<SetStateAction<boolean>>
+
 }
 
-const NavMobileContext = createContext<INavMobileContext>(null!)
+const VisibleComponentsContext = createContext<IVisibleComponentsContext>(null!)
 
-export function NavMobileProvider({children}: {children: ReactNode}){
-  const [isVisible, setIsVisible] = useState(false)
+export function VisibleComponentsProvider({children}: {children: ReactNode}){
+  const [isNavVisible, setIsNavVisible] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
   return(
-    <NavMobileContext.Provider value={{isVisible, setIsVisible}}>
+    <VisibleComponentsContext.Provider value={{isNavVisible, setIsNavVisible, isOpenModal, setIsOpenModal}}>
       {children}
-    </NavMobileContext.Provider>
+    </VisibleComponentsContext.Provider>
   )
 }
 
-export const useNavMobileContext = () => useContext(NavMobileContext)
+export const useVisibleComponentsContext = () => useContext(VisibleComponentsContext)

@@ -1,7 +1,6 @@
 'use client'
 import {ProfileMenu } from '@/components'
-import { AuthContext } from '@/contexts/AuthContext'
-import { useContext } from 'react'
+import { useAuthContext } from '@/contexts/AuthContext'
 
 import { SignOut, Swap, LockKey } from '@phosphor-icons/react'
 import { useRouter } from 'next/navigation'
@@ -11,7 +10,7 @@ import { destroyCookie } from 'nookies'
 
 export function NavProfile() {
 
-  const { userAuthenticated } = useContext(AuthContext)
+  const { userAuthenticated } = useAuthContext()
   const router = useRouter()
 
   async function logout() {

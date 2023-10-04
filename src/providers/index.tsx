@@ -1,15 +1,15 @@
 'use client'
 import { SessionProvider } from 'next-auth/react'
-import { NavMobileProvider, AuthContextProvider } from '@/contexts'
+import { VisibleComponentsProvider, AuthContextProvider } from '@/contexts'
 
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <AuthContextProvider>
-        <NavMobileProvider>
+        <VisibleComponentsProvider>
           {children}
-        </NavMobileProvider>
+        </VisibleComponentsProvider>
       </AuthContextProvider>
     </SessionProvider>
   )

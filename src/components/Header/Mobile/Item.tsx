@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
-import { redirect, useRouter } from 'next/navigation'
-import { useNavMobileContext } from '@/contexts'
+import { useRouter } from 'next/navigation'
+import { useVisibleComponentsContext } from '@/contexts'
 
 interface NavMobileItemProps {
   to: string
@@ -8,14 +8,14 @@ interface NavMobileItemProps {
 }
 
 export function Item({ to, children }: NavMobileItemProps) {
-  const { setIsVisible } = useNavMobileContext()
+  const { setIsNavVisible } = useVisibleComponentsContext()
   const router = useRouter()
 
   function handleClick() {
     if (!to) {
       return
     }
-    setIsVisible(prev => !prev)
+    setIsNavVisible(prev => !prev)
     router.push(to)
   }
 
