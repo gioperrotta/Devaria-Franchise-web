@@ -43,7 +43,7 @@ type LoginData = z.infer<typeof LoginSchema>
 
 export default function Login() {
   const [message, setMessage] = useState('')
-  const { setUserInformation } = useAuthContext()
+  const { setUserTokenCookies } = useAuthContext()
   
   const [isAlertErrorOpen, setIsAlertErrorOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -70,7 +70,8 @@ export default function Login() {
         return
       }
 
-      setUserInformation()
+      setUserTokenCookies()
+
       setIsLoading(false)
       router.replace('/dashboard')
     } catch (error) {

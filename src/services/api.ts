@@ -1,15 +1,15 @@
 import axios from 'axios'
-import { parseCookies } from 'nookies'
 
-// const { 'nextauth.token': token } = parseCookies()
-
-export  const api = axios.create ({
+export  const externalAPI = axios.create ({
   baseURL: process.env.NEXT_PUBLIC_API_URL || '',
 })
 
+export const MAX_AGE = 60 * 60 * 5 // 5 hours
 
-// if (token) {
-//   api.defaults.headers['Authorization'] = `Bearer ${token}` 
-// }
+export const setApiBearerToken = (token: string) => {
+  externalAPI.defaults.headers['Authorization'] = `Bearer ${token}`
+} 
+
+
 
 

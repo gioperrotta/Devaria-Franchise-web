@@ -1,12 +1,14 @@
 'use client'
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
 import { getSession } from 'next-auth/react'
-import { getUserInformation, setUserInformationCookies } from '@/services/userService'
+import { getUserInformationByAPI, getUserInformationByCookies, setUserInformationCookies } from '@/services/userService'
+import { parseCookies, setCookie } from 'nookies'
+import { MAX_AGE, setApiBearerToken } from '@/services/api'
 
 type User = {
   name: string
   email: string
-  avatar_url: string
+  avatarUrl: string
 } | null
 
 type SignInData = {
@@ -15,11 +17,8 @@ type SignInData = {
 }
 
 type AuthContextType = {
-  token: string
   userAuthenticated: User
-  isAuthenticated: boolean
-  getUserToken: Promise<string | null>
-  setUserInformation: () => void
+  setUserTokenCookies: () => void
 }
 
 interface AuthProviderProps {
@@ -29,58 +28,42 @@ interface AuthProviderProps {
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthProviderProps) {
-  const [userAuthenticated, setUserAuthenticated] = useState<User | null>(null)
   const [token, setToken] = useState('')
+  const [userAuthenticated, setUserAuthenticated] = useState<User | null>(null)
 
-  const isAuthenticated = !!userAuthenticated
+  useEffect(() => {
+    const { 'nextauth.Franchise.userToken': userToken } = parseCookies()
+    if (userToken) {
+      setToken(userToken)
+      setApiBearerToken(userToken)
+    }
+    const { 'nextauth.Franchise.userName': userName } = parseCookies()
+    if (userName) {
+      const user = getUserInformationByCookies()
+      setUserAuthenticated(user)
+    }
+  }, [])
 
-  const getUserToken = new Promise<string | null>(async (resolve, reject) => {
+  async function setUserTokenCookies() {
     const session: any = await getSession()
-    resolve(session?.token)
-  })
-
-  function setUserInformation() {
-    getUserToken.then((token) => {
-      if (token) {
-        setUserInformationCookies(token)
-        setToken(token)
-        if (!userAuthenticated) {
-          const user = getUser();
-        }
-      }
-    })
-  }
-
- async function getUser<User>() {
-    try {
-      const user = await getUserInformation()
+    if (session.token) {
+      const sessionToken = session.token
+      setToken(sessionToken)
+      setCookie(undefined, 'nextauth.Franchise.userToken', sessionToken, { MAX_AGE })
+      setApiBearerToken(sessionToken)
+      const user = await getUserInformationByAPI();
       if (user) {
+        setUserInformationCookies(user)
         setUserAuthenticated(user)
-      }
-    } catch (error) {
+      } 
     }
   }
 
-  useEffect(() => {
-    getUserToken.then((token) => {
-      if (token) {
-        setUserInformationCookies(token)
-        setToken(token)
-        if (!userAuthenticated) {
-          const user = getUser();
-        }
-      }
-    })
-  }, [])
-
-
-
   return (
-    <AuthContext.Provider value={{ userAuthenticated, isAuthenticated, token, getUserToken, setUserInformation }}>
+    <AuthContext.Provider value={{ userAuthenticated, setUserTokenCookies }}>
       {children}
     </AuthContext.Provider>
   )
-
 }
 
 export const useAuthContext = () => useContext(AuthContext);

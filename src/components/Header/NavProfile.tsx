@@ -13,6 +13,8 @@ export function NavProfile() {
   const { userAuthenticated } = useAuthContext()
   const router = useRouter()
 
+  console.log('ESTOU NavProfile userAuthenticated => ', userAuthenticated)
+
   async function logout() {
     await signOut({
       redirect: false
@@ -27,7 +29,7 @@ export function NavProfile() {
   }
 
   return (
-    <ProfileMenu.Header userName={userAuthenticated?.name} avatarUrl={userAuthenticated?.avatar_url}>
+    <ProfileMenu.Header userName={userAuthenticated?.name} avatarUrl={userAuthenticated?.avatarUrl}>
       <ProfileMenu.Item icon={<Swap />} text='Editar Perfil' />
       <ProfileMenu.Item icon={<LockKey />} text='Alterar Senha' />
       <ProfileMenu.Item icon={<SignOut />} text='Sair do Aplicativo' onClick={logout} />
