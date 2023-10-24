@@ -5,7 +5,7 @@ interface IVisibleComponentsContext {
   setIsNavVisible: Dispatch<SetStateAction<boolean>>
 
   isOpenModal: boolean
-  setIsOpenModal: Dispatch<SetStateAction<boolean>>
+  setOpenModal: Dispatch<SetStateAction<boolean>>
 
 }
 
@@ -13,9 +13,9 @@ const VisibleComponentsContext = createContext<IVisibleComponentsContext>(null!)
 
 export function VisibleComponentsProvider({children}: {children: ReactNode}){
   const [isNavVisible, setIsNavVisible] = useState(false)
-  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [isOpenModal, setOpenModal] = useState(false)
   return(
-    <VisibleComponentsContext.Provider value={{isNavVisible, setIsNavVisible, isOpenModal, setIsOpenModal}}>
+    <VisibleComponentsContext.Provider value={{isNavVisible, setIsNavVisible, isOpenModal, setOpenModal}}>
       {children}
     </VisibleComponentsContext.Provider>
   )

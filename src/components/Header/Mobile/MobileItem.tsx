@@ -5,9 +5,10 @@ import { useVisibleComponentsContext } from '@/contexts'
 interface NavMobileItemProps {
   to: string
   children: ReactNode
+  setVisible: (o: boolean) => void
 }
 
-export function Item({ to, children }: NavMobileItemProps) {
+export function MobileItem({ to, children, setVisible }: NavMobileItemProps) {
   const { setIsNavVisible } = useVisibleComponentsContext()
   const router = useRouter()
 
@@ -15,7 +16,7 @@ export function Item({ to, children }: NavMobileItemProps) {
     if (!to) {
       return
     }
-    setIsNavVisible(prev => !prev)
+    setVisible(false)
     router.push(to)
   }
 

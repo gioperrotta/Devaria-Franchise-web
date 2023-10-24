@@ -14,11 +14,21 @@ export interface UserType {
   role_level: number
 }
 
+interface ChangePasswordType {
+  password: string
+  newPassword: string
+}
 
 export async function userLogin(credentials: CredentialsType) {
   const response = await externalAPI.post('/login', credentials)
   return response
 }
+
+export async function changeUserPassword({ password, newPassword }: ChangePasswordType) {
+  const response = await externalAPI.patch('user/change-password', { password, newPassword })
+  return response
+}
+
 
 export function getUserInformationByCookies() {
   const { 'nextauth.Franchise.userName': userName } = parseCookies()
@@ -59,4 +69,6 @@ export function setUserInformationCookies(user: UserType) {
   setCookie(undefined, 'nextauth.Franchise.userAvatar', user.avatarUrl, { MAX_AGE })
   setCookie(undefined, 'nextauth.Franchise.userRoleLevel', user.role_level.toString(), { MAX_AGE })
 }
+
+
 

@@ -1,13 +1,12 @@
 'use client'
 import { useState } from "react";
-import { Modal, Button, Spinner } from "@/components";
+import { Modal, Button, Spinner, InputBox } from "@/components";
 
 import { CheckCircle } from '@phosphor-icons/react'
 
 export default function Dashboard() {
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+  const [isOpenModal, setOpenModal] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
   function MostrarLoader() {
     setIsLoading(true)
     setTimeout(()=> {
@@ -27,20 +26,25 @@ export default function Dashboard() {
         <Button variant='cancel' iconleft={<CheckCircle size={32}/>}>Cancelar</Button>
       </div>
       <button
-        onClick={() => setIsOpenModal(true)}
+        onClick={() => setOpenModal(true)}
         className="bg-red-400 p-4 mt-20"
       >Abrir Modal</button>
-      <Modal title="Teste teste teste" isOpen={isOpenModal} setIsOpen={setIsOpenModal}  >
+      <Modal title="Teste teste teste" isOpen={isOpenModal} setOpen={setOpenModal}  >
         <div className="w-96 h-72">
           <h1> DENTRO DO MODAL   aaaaaaaaaaaaaaaaaaa</h1>
           <h1> DENTRO DO MODAL</h1><h1> DENTRO DO MODAL</h1><h1> DENTRO DO MODAL</h1>
         </div>
       </Modal>
 
+      
+ 
+
       <button
         onClick={MostrarLoader}
         className="bg-red-400 p-4 mt-20"
-      >Abrir Loader</button>
+      >
+        Abrir Loader
+      </button>
       <Spinner isOpen={isLoading} />
 
     </div>

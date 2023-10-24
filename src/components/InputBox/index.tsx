@@ -1,13 +1,11 @@
 import { InputHTMLAttributes } from "react";
 import { useFormContext } from 'react-hook-form'
 
-
-
 interface InputBoxProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   field: string
+  variant?: 'dark' | 'light'
 }
-
 
 function get(obj: Record<any, any>, path: string) {
   const travel = (regexp: RegExp) =>
@@ -17,15 +15,23 @@ function get(obj: Record<any, any>, path: string) {
       .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
 
   const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
-  
+
   return result
 };
 
 export function InputBox(props: InputBoxProps) {
   const { register } = useFormContext()
   const { formState: { errors } } = useFormContext()
-
   const fieldError = get(errors, props.field)
+    
+  let { variant } = props
+  let inputStyle = 'bg-gray-500 text-gray-50  border-gray-200 focus:border-green-900'
+  let labelStyle = 'text-gray-200 peer-focus:text-gray-50'
+ if (!variant) variant = 'light'
+  if (variant === 'light') {
+    inputStyle =  'bg-gray-100 text-gray-950 border-gray-200 focus:border-green-900'
+    labelStyle = 'text-gray-400 peer-focus:text-gray-950'
+  }
 
   return (
     <div className="relative">
@@ -33,18 +39,17 @@ export function InputBox(props: InputBoxProps) {
         id={props.field}
         {...register(props.field)}
         type="text"
-        className="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm bg-gray-500 border-0 border-b-2 appearance-none text-white border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+        className={`${inputStyle} block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer`}
         placeholder=" "
         {...props}
       />
-      <label 
+      <label
         htmlFor={props.field}
-        className="absolute text-sm text-gray-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-50 peer-focus:dark:text--50 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+        className={`${labelStyle} absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4`}
       >
         {props.label}
       </label>
-      {!fieldError ? "": <span className="text-xs text-red-500">{fieldError.message?.toString()}</span>}
+      {!fieldError ? "" : <span className="text-xs text-red-500">{fieldError.message?.toString()}</span>}
     </div>
   )
-
 }

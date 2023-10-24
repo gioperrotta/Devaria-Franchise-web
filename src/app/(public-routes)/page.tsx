@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 
-import { useForm, FormProvider } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -12,12 +12,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import LogoA21 from '../../../public/images/A21-Logo-500.png'
 
 
-import {Alert,  Button, InputBox, Spinner } from '@/components'
+import { Alert, Button, InputBox, Spinner } from '@/components'
 
 
 import { useAuthContext } from '@/contexts'
-
-import { SignIn } from '@phosphor-icons/react'
 
 const LoginSchema = z.object({
   email: z.string().nonempty({
@@ -44,7 +42,7 @@ type LoginData = z.infer<typeof LoginSchema>
 export default function Login() {
   const [message, setMessage] = useState('')
   const { setUserTokenCookies } = useAuthContext()
-  
+
   const [isAlertErrorOpen, setIsAlertErrorOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -104,18 +102,18 @@ export default function Login() {
           <form className="space-y-6" onSubmit={handleSubmit(userLogin)}>
             <InputBox disabled={isSubmitting} onFocus={() => setMessage('')} type='text' field='email' label='E-mail' />
             <InputBox disabled={isSubmitting} onFocus={() => setMessage('')} type='password' field='password' label='Senha' />
-            <Button variant='submit' size='full' iconright={<SignIn size={32}/>}>Entrar</Button>
+            <Button variant='submit' size='full' >Entrar</Button>
           </form>
         </FormProvider>
-  
+
       </div>
       <Alert
-          isOpen={isAlertErrorOpen}
-          setIsOpen={setIsAlertErrorOpen}
-          title='Erro ao tentar fazer login'
-          message='Usuário, E-mail ou Senha inválidos !' 
-        />
-        <Spinner isOpen={isLoading} />
+        isOpen={isAlertErrorOpen}
+        setOpen={setIsAlertErrorOpen}
+        title='Erro ao tentar fazer login'
+        message='Usuário, E-mail ou Senha inválidos !'
+      />
+      <Spinner isOpen={isLoading} />
     </div>
   )
 }
