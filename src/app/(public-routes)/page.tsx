@@ -100,8 +100,8 @@ export default function Login() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <FormProvider {...userLoginForm}>
           <form className="space-y-6" onSubmit={handleSubmit(userLogin)}>
-            <InputBox disabled={isSubmitting} onFocus={() => setMessage('')} type='text' field='email' label='E-mail' />
-            <InputBox disabled={isSubmitting} onFocus={() => setMessage('')} type='password' field='password' label='Senha' />
+            <InputBox disabled={isSubmitting} variant='dark' onFocus={() => setMessage('')} type='text' field='email' label='E-mail' />
+            <InputBox disabled={isSubmitting} variant='dark' onFocus={() => setMessage('')} type='password' field='password' label='Senha' />
             <Button variant='submit' size='full' >Entrar</Button>
           </form>
         </FormProvider>
