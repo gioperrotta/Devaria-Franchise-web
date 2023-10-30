@@ -6,6 +6,7 @@ import { parseCookies, setCookie } from 'nookies'
 import { MAX_AGE, setApiBearerToken } from '@/services/api'
 
 type User = {
+  id: string
   name: string
   email: string
   avatarUrl: string
@@ -32,6 +33,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   const [userAuthenticated, setUserAuthenticated] = useState<User | null>(null)
 
   useEffect(() => {
+    setUserTokenCookies()
     const { 'nextauth.Franchise.userToken': userToken } = parseCookies()
     if (userToken) {
       setToken(userToken)
@@ -42,11 +44,13 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
       const user = getUserInformationByCookies()
       setUserAuthenticated(user)
     }
+   
   }, [])
 
   async function setUserTokenCookies() {
+
     const session: any = await getSession()
-    if (session.token) {
+    if (session?.token) {
       const sessionToken = session.token
       setToken(sessionToken)
       setCookie(undefined, 'nextauth.Franchise.userToken', sessionToken, { MAX_AGE })
@@ -58,7 +62,6 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
       } 
     }
   }
-
   return (
     <AuthContext.Provider value={{ userAuthenticated, setUserTokenCookies }}>
       {children}

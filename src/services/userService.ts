@@ -19,6 +19,11 @@ interface ChangePasswordType {
   newPassword: string
 }
 
+export interface UpdateUserProfileType {
+  name: string
+  file: File | null
+}
+
 export async function userLogin(credentials: CredentialsType) {
   const response = await externalAPI.post('/login', credentials)
   return response
@@ -29,10 +34,15 @@ export async function changeUserPassword({ password, newPassword }: ChangePasswo
   return response
 }
 
+export async function updateUserProfile(id :string, data:FormData) {
+  console.log('ESTOU updateUserProfile id =>', id, 'data =>' , data)
+  const response = await externalAPI.patch(`user/${id}`, data)
+  return response
+}
 
 export function getUserInformationByCookies() {
-  const { 'nextauth.Franchise.userName': userName } = parseCookies()
   const { 'nextauth.Franchise.userId': userId } = parseCookies()
+  const { 'nextauth.Franchise.userName': userName } = parseCookies()
   const { 'nextauth.Franchise.userEmail': userEmail } = parseCookies()
   const { 'nextauth.Franchise.userAvatar': userAvatar } = parseCookies()
   const { 'nextauth.Franchise.userRoleLevel': userRoleLevel } = parseCookies()

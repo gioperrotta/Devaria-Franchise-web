@@ -9,6 +9,7 @@ export function Nav() {
         <NavItem href='/products'><span>Produtos</span></NavItem>
         <NavItem href='/franchises'><span>Franquias</span></NavItem>
         <NavItem href='/customers'><span>Clientes</span></NavItem>
+        <NavItem href='/cep'><span>C E P</span></NavItem>
       </nav>
       <ProfileDropdown/>
       <MobileDropdown/>

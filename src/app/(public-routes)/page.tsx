@@ -41,11 +41,10 @@ type LoginData = z.infer<typeof LoginSchema>
 
 export default function Login() {
   const [message, setMessage] = useState('')
-  const { setUserTokenCookies } = useAuthContext()
-
   const [isAlertErrorOpen, setIsAlertErrorOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
+  
+  const { setUserTokenCookies } = useAuthContext()
 
   const router = useRouter()
 
@@ -64,6 +63,11 @@ export default function Login() {
 
       if (result?.error) {
         setIsLoading(false)
+        if (result?.error.includes('ECONNREFUSED')) {
+          setMessage(`Erro de conexão com o servidor - ${result?.error}`)
+        } else {
+          setMessage('Usuário ou senha incorretos verifique.')
+        }
         setIsAlertErrorOpen(true)
         return
       }
@@ -73,7 +77,9 @@ export default function Login() {
       setIsLoading(false)
       router.replace('/dashboard')
     } catch (error) {
-      console.log('Login error => ', error)
+      setIsLoading(false)
+      setMessage(`CATCH ERROR => ${error}`)
+      setIsAlertErrorOpen(true)
     }
   }
 
@@ -100,8 +106,8 @@ export default function Login() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <FormProvider {...userLoginForm}>
           <form className="space-y-6" onSubmit={handleSubmit(userLogin)}>
-            <InputBox disabled={isSubmitting} variant='dark' onFocus={() => setMessage('')} type='text' field='email' label='E-mail' />
-            <InputBox disabled={isSubmitting} variant='dark' onFocus={() => setMessage('')} type='password' field='password' label='Senha' />
+            <InputBox disabled={isSubmitting} theme='dark' onFocus={() => setMessage('')} type='text' field='email' label='E-mail' />
+            <InputBox disabled={isSubmitting} theme='dark' onFocus={() => setMessage('')} type='password' field='password' label='Senha' />
             <Button variant='submit' size='full' >Entrar</Button>
           </form>
         </FormProvider>
@@ -111,7 +117,7 @@ export default function Login() {
         isOpen={isAlertErrorOpen}
         setOpen={setIsAlertErrorOpen}
         title='Erro ao tentar fazer login'
-        message='Usuário, E-mail ou Senha inválidos !'
+        message={message}
       />
       <Spinner isOpen={isLoading} />
     </div>

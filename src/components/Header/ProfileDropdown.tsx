@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 
@@ -8,14 +9,10 @@ import { destroyCookie } from 'nookies'
 
 import { useAuthContext } from '@/contexts/AuthContext'
 
-import { ChangePassword, Dropdown, EditProfile } from '@/components'
-
+import { Dropdown} from '@/components'
 
 export function ProfileDropdown() {
   const [isDropdownVisible, setDropdownVisible] = useState(false)
-  const [isOpenChangePassword, setOpenChangePassword] = useState(false)
-  const [isOpenEditProfile, setOpenEditProfile] = useState(false)
-
   const { userAuthenticated } = useAuthContext()
   const router = useRouter()
 
@@ -35,12 +32,12 @@ export function ProfileDropdown() {
 
   function handleChangePassword() {
     setDropdownVisible(false)
-    setOpenChangePassword(true)
+    router.push('/users/change-password')
   }
 
   function handlEditProfile() {
     setDropdownVisible(false)
-    setOpenEditProfile(true)
+    router.push('/users/edit-profile')
   }
 
   return (
@@ -55,8 +52,6 @@ export function ProfileDropdown() {
         <Dropdown.Item onClick={handleChangePassword}>{<LockKey />} Alterar Senha</Dropdown.Item>
         <Dropdown.Item onClick={logout}>{<SignOut />} Sair do Aplicativo</Dropdown.Item>
       </Dropdown.Header>
-      <ChangePassword isOpen={isOpenChangePassword} setOpen={setOpenChangePassword}/>
-      <EditProfile isOpen={isOpenEditProfile} setOpen={setOpenEditProfile}/>
     </>
   )
 }

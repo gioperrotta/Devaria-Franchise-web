@@ -11,7 +11,7 @@ interface AlertProps {
 export function Alert({title, isOpen, setOpen, message}: AlertProps) {
   return (
     <Modal title={title} isOpen={isOpen} setOpen={setOpen}>
-      <div className='w-72 h-40 py-5 px-2 rounded-b-md bg-gray-200 text-black flex flex-col items-center justify-between'>
+      <div className='z-50 w-72 h-40 py-5 px-2 rounded-b-md bg-gray-200 text-black flex flex-col items-center justify-between'>
         <h1>{message}</h1>
         <div className='px-10 mb-4'>
           <Button onClick={() => setOpen(false)} variant='proceed' size='small' iconleft={<ArrowLeft size={18}/>}>Voltar</Button>

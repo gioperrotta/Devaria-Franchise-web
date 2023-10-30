@@ -5,9 +5,6 @@ import { InputBox } from '@/components/InputBox'
 
 import { UploadImage } from '@/components/UploadImage'
 
-import { ChangePassword } from '@/components/User/ChangePassword'
-import { EditProfile } from '@/components/User/EiditProfile'
-
 import { Header } from '@/components/Header/Header'
 import { Logo } from '@/components/Header/Logo'
 import { Nav } from '@/components/Header/Nav'
@@ -24,7 +21,6 @@ export {
   Button,
   InputBox,
   UploadImage,
-  ChangePassword, EditProfile,
  
   Dropdown,
   Header, Logo,
